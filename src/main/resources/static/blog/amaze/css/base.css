@@ -2243,7 +2243,6 @@
      width: 120px
    }
  }
- 
  .intro-header {
    background: no-repeat center center;
    background-color: #808080;
@@ -2313,7 +2312,7 @@
      margin-bottom: 20px
    }
    .intro-header .post-heading h1 {
-     font-size: 45px
+     font-size: 30px
    }
  }
  
@@ -3311,7 +3310,7 @@
  
  .intro-header .post-heading h1 {
    font-size: 30px;
-   margin-bottom: 24px;
+   margin-bottom: 18px;
  }
  
  .intro-header .post-heading .meta {
@@ -3328,7 +3327,7 @@
  
  @media only screen and (min-width: 768px) {
    .intro-header .post-heading h1 {
-     font-size: 45px;
+     font-size: 30px;
    }
    .intro-header .post-heading .meta {
      font-size: 20px;
