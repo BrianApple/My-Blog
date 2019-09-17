@@ -64,6 +64,7 @@ $(function () {
         autoSubmit: true,
         responseType: "json",
         onSubmit: function (file, extension) {
+        	debugger
             if (!(extension && /^(jpg|jpeg|png|gif)$/.test(extension.toLowerCase()))) {
                 alert('只支持jpg、png、gif格式的文件！');
                 return false;

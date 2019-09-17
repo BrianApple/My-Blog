@@ -187,7 +187,8 @@ public class BlogController {
                                      @RequestParam(name = "editormd-image-file", required = true)
                                              MultipartFile file) throws IOException, URISyntaxException {
         String fileName = file.getOriginalFilename();
-        String suffixName = fileName.substring(fileName.lastIndexOf("."));
+        int dex =  fileName.lastIndexOf(".");
+        String suffixName = fileName.substring(dex == -1 ? 0 : dex);
         //生成文件名称通用方法
         SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd_HHmmss");
         Random r = new Random();
@@ -195,9 +196,14 @@ public class BlogController {
         tempName.append(sdf.format(new Date())).append(r.nextInt(100)).append(suffixName);
         String newFileName = tempName.toString();
         //创建文件
-        File destFile = new File(Constants.FILE_UPLOAD_DIC + newFileName);
-        String fileUrl = MyBlogUtils.getHost(new URI(request.getRequestURL() + "")) + "/upload/" + newFileName;
-        File fileDirectory = new File(Constants.FILE_UPLOAD_DIC);
+        //重新生成文件路径
+        String newPath = Constants.FILE_UPLOAD_DIC+newFileName.split("\\_")[0].substring(0, 6)+File.separator;
+         File destFile = new File(newPath + newFileName);
+        File fileDirectory = new File(newPath);
+        
+        String fileUrl = MyBlogUtils.getHost(new URI(request.getRequestURL() + "")) + "/upload/" + newFileName.split("\\_")[0].substring(0, 6)+"/"+newFileName;
+        System.out.println("上传文件路径为：=="+fileUrl);
+        System.out.println("本地路径为：=="+newPath);
         try {
             if (!fileDirectory.exists()) {
                 if (!fileDirectory.mkdir()) {
@@ -205,6 +211,7 @@ public class BlogController {
                 }
             }
             file.transferTo(destFile);
+            System.out.println("报文文件成功！");
             request.setCharacterEncoding("utf-8");
             response.setHeader("Content-Type", "text/html");
             response.getWriter().write("{\"success\": 1, \"message\":\"success\",\"url\":\"" + fileUrl + "\"}");

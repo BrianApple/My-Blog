@@ -32,6 +32,13 @@ import java.util.UUID;
 @RequestMapping("/admin")
 public class UploadController {
 
+    /**
+     * 文章图片上传没有走这个方法---走的是BlogController的uploadFileByEditormd方法
+     * @param httpServletRequest
+     * @param file
+     * @return
+     * @throws URISyntaxException
+     */
     @PostMapping({"/upload/file"})
     @ResponseBody
     public Result upload(HttpServletRequest httpServletRequest, @RequestParam("file") MultipartFile file) throws URISyntaxException {
@@ -43,9 +50,13 @@ public class UploadController {
         StringBuilder tempName = new StringBuilder();
         tempName.append(sdf.format(new Date())).append(r.nextInt(100)).append(suffixName);
         String newFileName = tempName.toString();
-        File fileDirectory = new File(Constants.FILE_UPLOAD_DIC);
+        String newFilePath = Constants.FILE_UPLOAD_DIC+newFileName.split("\\_")[0].substring(0, 6)+"/";
+        File fileDirectory = new File(newFilePath);
+        if(!fileDirectory.exists()){
+            fileDirectory.mkdirs();//以  “年月”作为文件的目录
+        }
         //创建文件
-        File destFile = new File(Constants.FILE_UPLOAD_DIC + newFileName);
+        File destFile = new File(newFilePath + newFileName);
         try {
             if (!fileDirectory.exists()) {
                 if (!fileDirectory.mkdir()) {
